@@ -9,8 +9,8 @@ Ctrl + c   跳出操作
 Ctrl + d   退出终端  等于exit
 Ctrl+shift+t  新打开一个终端  ctrl+pageup前切换
 Esc+.    调用上一个命令的参数
-^xx^^yy    快速执行上一个命令并把参数由xx换成yy
-选中命令 按鼠标中间键，   复制+粘贴
+^xx^yy    快速执行上一个命令并把参数由xx换成yy
+选中命令 按鼠标中间键   复制+粘贴
 
 Whatis  命令的作用和缩写 
 
