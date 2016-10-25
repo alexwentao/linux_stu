@@ -1,0 +1,135 @@
+﻿操作 
+
+Tab键，补齐。两下tab 则是调出所有符合规则的文件
+Ctrl +a   跳到结尾
+Ctrl +e   跳到结尾
+Ctrl +u  删除光标到开头位置
+Ctrl +k   删除光标到结尾位置
+Ctrl + c   跳出操作
+Ctrl + d   退出终端  等于exit
+Ctrl+shift+t  新打开一个终端  ctrl+pageup前切换
+Esc+.    调用上一个命令的参数
+^xx^^yy    快速执行上一个命令并把参数由xx换成yy
+选中命令 按鼠标中间键，   复制+粘贴
+
+Whatis  命令的作用和缩写 
+
+man [1(第一章)] [passwd] 文档        可以 /加关键词搜索标注  按n向下  N向上查询 ^加 关键词，搜索以^以后的东西开头的   按q推出 man就是man page的简写 还有info page 简写为info
+man –k [部分关键字]   列出含有关键字的命令 k为 key的简写
+man 文件名 可以查看文件的用法
+
+init  切换运行级别 ，每个运行级别开启着不同的服务，每个级别有七个控制台， 
+tty   显示控制台     控制台共享服务，服务已经开启不能再次开启
+1：目录权限
+　　
+　　
+　　剩下的三组 九个 一组三个  
+　　第一组 用户  （所有者）  
+　　R
+　　Read
+　　
+　　W
+　　Write
+　　
+　　X
+　　执行
+　　
+　　第二组 组
+　　
+　　同上
+　　
+　　第三组 其他（其他所有人）
+　　
+　　同上
+　　
+2：更改权限
+　　chmod 更改权限
+　　
+　　chmod u+r,g-r,o=rw 文件名
+　　
+　　可以用4 2 1 0 分别代表  r w x -   所有755  代表 rwx r-x r-x
+　　chmod 743 文件名      则更改问 rwx r-- -wx
+
+　　chown root.root test
+　　chown root test
+　　chown root:root test
+　　
+　　chgrp root test
+
+3：目录结构
+	
+	file 命令 查看文件类型
+	
+　　linux 文件属性
+　　
+　　bin  二进制文件 二进制命令存放地点
+　　boot 系统启动文件 
+　　dev 设备文件  （硬盘移动硬盘u盘等 device）
+　　etc  配置文件  
+　　home 用户家目录
+　　lib 链接库文件 （相当于del链接库文件）
+　　lost+fonud 每个分区都有
+　　
+　　media 挂载点。系统自动挂载点  u盘插入的时候 打开就会进入media
+　　mnt  挂载点  手动挂载点  
+　　opt  使用源码包安装软件的时候 一般习惯都会选择安装到apt里面
+　　proc 内核参数 不占用大小
+　　root root用户的家目录
+　　sbin 系统管理员的二进制命令
+　　tmp  临时文件
+　　usr 相当月windows下的programfiles文件夹 
+　　var 日志文件 缓存文件 数据库文件
+　　
+　　
+　　
+　　
+　　
+　　
+跳转到上一操作目录   cd -
+跳转到上一级目录  cd ..
+
+要创建a下面的b  但a目前不存在 可以用（p   parent）   mkdir -p   a/b    删除同理
+
+
+同时创建多个 mkdir -p   a/{b,c,d}
+
+
+rm -rf   r递归  f   force
+
+
+$PATH=”/as/a:/b/a”
+
+
+
+ls -d 显示文件自身的信息
+
+
+cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a覆盖yy或者拷贝重命名为yy   不会辅助文件属性信息（修改时间）  加-p  就可以复制属性信息
+-a可以辅助目录和属性     -rf 强制递归复制全部
+
+cp -u  /path1/service /path2/service 若加了-u 则path1下面的如果比2下面的新 则覆盖  否则不覆盖    不加u会询问是否覆盖   y则覆盖  不写默认为n
+
+
+
+cp 快捷方式的时候  是拷贝的源文件 并不是快捷方式  -d的时候就可以拷贝本身
+
+
+
+
+剪切
+
+
+
+mv  选项  /path1/xx   /path2/yy
+
+具体和cp 一样
+
+如何获取文件名和目录名
+ls  /boot/grub/grub.conf    文件目录名
+
+basename  /boot/grub/grub.conf        获取目录名
+
+dirname  /boot/grub/grub.conf             获取文件名
+
+
+
