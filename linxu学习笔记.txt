@@ -61,6 +61,9 @@ tty   显示控制台     控制台共享服务，服务已经开启不能再次
     file 命令 查看文件类型
 
     - 普通文件  d 目录  b开头  设备块文件   c  设备文件 （字符型鼠标、键盘、tty等） l 快捷方式 软连接
+
+
+    
 	
 　　linux 文件属性
 　　
@@ -92,12 +95,14 @@ linux 目录配置
    
 　　lsb-release -a 也可以查看信息 还有 cat /etc/redhat-release
 　　
-　　
+　　~ 表示用户的家目录 
+    cd 不加参数 可以直接进入用户 “家目录” cd ~ 等于cd
+    cd ~tom/  进入tom的家目录
 　　
     跳转到上一操作目录   cd -
     跳转到上一级目录     cd ..
 
-要创建a下面的b  但a目前不存在 可以用（p   parent）   mkdir -p   a/b    删除同理
+要创建a下面的b  但a目前不存在 可以用（p   parent）   mkdir -p   a/b    删除同理（但是需要删除b后a为空才能成功删除a 否则只删除b）
 
 
 同时创建多个 mkdir -p   a/{b,c,d}
@@ -113,8 +118,11 @@ $PATH=”/as/a:/b/a”
 ls -d 显示文件自身的信息
 
 
-cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a覆盖yy或者拷贝重命名为yy   不会辅助文件属性信息（修改时间）  加-p  就可以复制属性信息
+ cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a‘尝试’覆盖（不同类型无法覆盖）yy或者拷贝重命名为yy   不会复制文件属性信息（修改时间）  加-p  就可以复制属性信息
 -a可以辅助目录和属性     -rf 强制递归复制全部
+
+-a可以复制目录和属性 
+
 
 cp -u  /path1/service /path2/service 若加了-u 则path1下面的如果比2下面的新 则覆盖  否则不覆盖    不加u会询问是否覆盖   y则覆盖  不写默认为n
 
@@ -139,6 +147,34 @@ ls  /boot/grub/grub.conf    文件目录名
 basename  /boot/grub/grub.conf        获取目录名
 
 dirname  /boot/grub/grub.conf             获取文件名
+
+
+查看文本文件方式
+
+    cat 从文件第一行显示 适合查看一些小文件  因为显示大文件浏览费劲  、
+    tac  从最后一行显示
+    nl  和cat -n效果一样 具体看--help
+    
+    more 和less
+    more +文件      按enter是一行一行的显示  按space是一屏幕一屏幕的显示（注意只能往后翻）
+        可以打/后输入查找的关键字 然后回车  可以按n从上网下  按大写的N  自下而上找 按q退出
+
+    less +文件      按enter是一行一行的显示  按space是一屏幕一屏幕的显示 还可以pageup和pagedown，
+        home和end开头和结束  可以打/后输入查找的关键字 然后回车  可以按n从上网下  按大写的N  自下而上找
+
+    head +文件 默认查看文件前十行   加 -5 或者-n 5  查看前5行
+
+    tail +文件 显示尾几行  同上   其他 tail -f 或者 tailf  监控功能 显示尾几行并监控随时的变化  ctrl+c退出
+
+     
+od 命令 -t c +文件   -t以什么格式 c 阿斯科编码
+    strings /bin/ls  也可以显示出文件的内容，并且是能看懂的
+
+创建文件
+    touch +文件  如果文件不存在则创建 如果文件存在 则更新文件属性 24'
+
+
+
 
 
 
