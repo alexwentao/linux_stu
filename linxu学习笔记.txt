@@ -88,7 +88,7 @@ tty   显示控制台     控制台共享服务，服务已经开启不能再次
 跳转到上一操作目录   cd -
 跳转到上一级目录  cd ..
 
-要创建a下面的b  但a目前不存在 可以用（p   parent）   mkdir -p   a/b    删除同理
+要创建a下面的b  但a目前不存在 可以用（p   parent）   mkdir -p   a/b    删除同理（但是需要删除b后a为空才能成功删除a 否则只删除b）
 
 
 同时创建多个 mkdir -p   a/{b,c,d}
@@ -104,7 +104,7 @@ $PATH=”/as/a:/b/a”
 ls -d 显示文件自身的信息
 
 
-cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a覆盖yy或者拷贝重命名为yy   不会辅助文件属性信息（修改时间）  加-p  就可以复制属性信息
+cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a覆盖yy或者拷贝重命名为yy   不会复制文件属性信息（修改时间）  加-p  就可以复制属性信息
 -a可以辅助目录和属性     -rf 强制递归复制全部
 
 cp -u  /path1/service /path2/service 若加了-u 则path1下面的如果比2下面的新 则覆盖  否则不覆盖    不加u会询问是否覆盖   y则覆盖  不写默认为n
@@ -122,7 +122,7 @@ cp 快捷方式的时候  是拷贝的源文件 并不是快捷方式  -d的时�
 
 mv  选项  /path1/xx   /path2/yy
 
-具体和cp 一样
+具体和cp 一样   mv xx yy  就是把xx重命名为yy
 
 如何获取文件名和目录名
 ls  /boot/grub/grub.conf    文件目录名
