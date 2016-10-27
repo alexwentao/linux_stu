@@ -196,7 +196,47 @@ chattr  更改隐藏文件属性
     chattr  +i  目录    不能更改
 
 文件特殊权限  ：SUID 、SGID 、SBIT
+    SUID（这不是个命令）
     chmod u+s xx  当user位置上  有了s权限的时候，其他人执行此文件的时候  拥有所有者的权限
+
+    如果想在一个命令嵌套在其他命令里面中想要输入命令的时候 需要用反引号``，或者$()包含另一个命令  
+    比如echo"xxxxxx`hostname`xxxxxx"    或者echo"xxxxxx$(hostname)xxxxxx"
+    
+    SGID（这不是个命令） 
+    chmod g+s xx  当group位置上  有了s权限的时候，
+        对于目录而言 在这个目录里面再创建的任何文件和文件夹都会继承xx目录所在的组（原存在的不受影响）
+
+    SBIT
+
+    t只能加载other上，且只能对目录操作
+    chmod o+t xx目录  当other位置上  有了t权限的时候，
+        在xx目录中 创建的文件 除了所有者和root能够删除 ，其他用户删除不了
+
+
+    chmod 4644 xx  给u位置加s   
+    chmod 2644 xx  给g位置加s
+    chmod 1644 xx  给o位置加t
+
+
+
+命令与文件的查询
+
+     //脚本文件名的查询
+    主要查找命令
+    which ls    可以查询ls命令的路径  并提供ls命令的别名
+    whereis ls  除了找到二进制文件  还找到了文件的帮助文档 -b 查看二进制文件 -m 查询manpage中相关项
+
+    可以查找命令和文件
+    locate    查找原理 是在mlocate.db数据库中查询的 它每天生成一次  可以updatedb 来手动更新此数据库
+    locate -i  忽略大小写  其他的自己看--help
+
+    find 目录 -属性 属性值  在目录中查找 如果不写目录为当前目录  属性可以为  name size user等
+
+    find /xx -iname alex   在根目录下  按名字查找alex   i为忽略大小写
+
+
+
+    
 
 
 
