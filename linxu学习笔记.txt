@@ -222,6 +222,7 @@ chattr  更改隐藏文件属性
 命令与文件的查询
 
      //脚本文件名的查询
+     //文件名的查找
     主要查找命令
     which ls    可以查询ls命令的路径  并提供ls命令的别名
     whereis ls  除了找到二进制文件  还找到了文件的帮助文档 -b 查看二进制文件 -m 查询manpage中相关项
@@ -233,7 +234,53 @@ chattr  更改隐藏文件属性
     find 目录 -属性 属性值  在目录中查找 如果不写目录为当前目录  属性可以为  name size user等
 
     find /xx -iname alex   在根目录下  按名字查找alex   i为忽略大小写
+    find /xx -user alex      查找所有属于alex的
+    find /xx -user alex -group gro     查找所有属于alex的 且属于组 gro的
+    find /xx -user alex -or -group gro     查找所有属于alex的 或者属于组 gro的
+    find / -uid 500   可以用id来查看用户id   如果alex用户id为500   上面的命令等同于 -user alex
+    find / size 4m  文件为4m的    
+    find size +2m size -6m    文件大于2m小于6m的
+    find -ctime 1  创建时间 单位为一天
+    find -ctime +1 创建时间超过一天的
+    find -cmin  +1 创建时间超过一分钟的  
+    find -newer file1  查看比file文件新的文件    
+    
+    find /mnt -perm 222 根据权限查找 必须完全匹配
+    find /mnt -perm +222   u g o只要有一个有w权限就可以
+    find /mnt -perm -222   u g o都要有w权限就可以。有别的权限无所谓
+    find /mnt -perm -2   前面的数字 有一个代表的是other  两个代表的是group和other
 
+磁盘与文件系统管理：：
+    
+    MBR 512b 字节
+    分区 
+    boot sector  引导分区  
+
+
+    superblock  超级块   记录的是inode和block的信息  一共有多少个block  使用了多少 剩余多少等
+                
+
+
+    inode  每个放在block的文件 在inode中都会有个记录 指向文件放在哪个block中 并保存其信息属性
+           所有者所属组等    每个inode为128字节   每指向一个块消耗4字节  所以一个inode能记录的文件最           大为  128k？？？  其实不是这样 具体在视频 8章1 22.40 可以看
+
+    block  一个一个的小格子 每个是4k windows下面叫簇 linux下面叫块  
+           block为存储文件的地方 当一个block中存放了东西 即使没有填充满 也不能再填写东西了
+           格式化分区的时候可以选择每个block的大小     
+
+
+
+           block会被分组 block group分别为superblock，             
+           文件系统描述信息（每个block group的开始结束位置），
+           块位图（块对照表）记录的为哪些block被使用哪些没有被使用，
+           然后是inode位图（对照表）记录的为哪些inode被使用哪些没有被使用，
+           inode表，
+           最后为block
+    
+    
+
+      
+    
 
 
     
