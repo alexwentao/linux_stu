@@ -77,7 +77,7 @@ tty   显示控制台     控制台共享服务，服务已经开启不能再次
 　　
 　　media 挂载点。系统自动挂载点  u盘插入的时候 打开就会进入media
 　　mnt  挂载点  手动挂载点  
-　　opt  使用源码包安装软件的时候 一般习惯都会选择安装到apt里面
+　　opt  使用源码包安装软件的时候 一般习惯都会选择安装到opt里面
 　　proc 内核参数 虚拟的 不占用大小
 　　root root用户的家目录
 　　sbin 系统管理员的二进制命令
@@ -118,7 +118,7 @@ $PATH=”/as/a:/b/a”
 ls -d 显示文件自身的信息
 
 
-cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a‘尝试’覆盖（不同类型无法覆盖）yy或者拷贝重命名为yy   不会复制文件属性信息（修改时间）  加-p  就可以复制属性信息
+cp  /root/a /root/xx/yy    若yy为文件夹，则把a拷贝到yy文件夹中  若yy为文件或者不存在   则把a‘尝试’覆盖（不同类型无法覆盖）yy或者拷贝重命名为yy   不会复制文件属性信息（修改时间）  加-p  就可以复制属性信息 preserve
 -a可以辅助目录和属性     -rf 强制递归复制全部
 
 -a可以复制目录和属性 
@@ -262,7 +262,8 @@ chattr  更改隐藏文件属性
 
 
     inode  每个放在block的文件 在inode中都会有个记录 指向文件放在哪个block中 并保存其信息属性
-           所有者所属组等    每个inode为128字节   每指向一个块消耗4字节  所以一个inode能记录的文件最           大为  128k？？？  其实不是这样 具体在视频 8章1 22.40 可以看
+           所有者所属组等    每个inode为128字节   每指向一个块消耗4字节  所以一个inode能记录的文件最           大为  128k？？？  其实不是这样 具体在视频 8章（1） 22.40 可以看  其实它并不是直接在inode里面记录某一个文件的信息，它是把inode划分为12个直接区，然后再划分一个间接区、二间接区和三间接区。直接区里面所记录的文件就是直接记录的存储数据。间接区里面指向的block里面存放的是存放数据的block地址，
+每个间接区指向的block中可以存放1024个块信息（每个4b），所以间接区可以存放的最大文件为4m。以此类推，二间接区中就可以存放4g。三间接区中就可以放4t。
 
     block  一个一个的小格子 每个是4k windows下面叫簇 linux下面叫块  
            block为存储文件的地方 当一个block中存放了东西 即使没有填充满 也不能再填写东西了
@@ -277,13 +278,105 @@ chattr  更改隐藏文件属性
            inode表，
            最后为block
     
+
+    ls -i +文件 可以查看记录这个文件信息的inode编号为多少
+
+    ls -id +文件夹   可以查看文件夹的inode编号。这个编号对应的block里存放的是文件夹下文件的inode编号
+  
+    filefrag -v +文件  可以查看文件具体的block信息
+
+    dumpe2fs +文件   可以查看superblock和blockgroup的信息
+
+
+ext3对比ext2来说 增加了日志功能
+
+
+vfs  虚拟文件系统  可以根据软件需要调用相应的文件系统 ext2 ext3 vfat
     
+    df -T 可以查看文件系统类型  加h human 同以往
+
+    du +文件夹  可以显示文件大小和文件内部文件大小 如果只查看本目录 -s
 
       
     
 
+链接文件    软链接和硬链接
+
+    软链接 相当于快捷方式
+    ln -s aa aa1    aa1是aa的快捷方式 s为soft的意思
+    
+    硬链接  linux和unix中专有的概念  
+    ln aa aa1    aa1为aa的硬链接  硬链接的inode信息为相同的，指向的block是相同的，一个文件有了两个名字，因为每个分区都有自己的inode。inode不能跨区 所以硬链接也不能跨区  目录不能创建硬链接
+ 
+
+    fdisk -l   显示所有的硬盘和分区
+
+    fdisk -l /dev/sda   显示某一个硬盘的分区信息
+    fdisk /dev/sda 硬盘分区  具体看 m帮助  t可以改变系统id 每个id对应一个系统类型，改变id相当于改变了类型
+
+
+ 
+    MBR分区方法  硬盘最多只能划分四个主分区   MBR区域有512字节 其中446b引导程序 64b是分区表 2b结束符
+其标记主分区需要16字节 所以最多只能划分四个主分区，最大容量为2T
+    现在所用的为gpt分区，gpt在windows下最多支持128分区（具体看系统），而且最大容量为18 EB  且其启动信息保存多份并在其中一个出错的时候能自动修复，容错率等也大大的增强了。
+
+
+    分区操作完成应该更新对应硬盘的分区表  
+    partprobe /dev/sda   如果不加参数 则更新所有
+
+    分区划分后 需要格式化才能使用   格式化生成block  
+    mkfs -t ext3 /dev/sda5 格式化分区为ext3格式 
+    mkfs -t ext3 -b 4096 /dev/sda5 指定blocksize为4k
+    
+    mkfs.ext3 /dev/sda5  格式化分区为ext3格式 等同 mkfs -t ext3
+
+    使用前要挂载，
+    
+    
+    检查磁盘  fsck硬盘分区检查  badblocks硬盘坏道检测
+    fsck -f -C /dev/sda5  f为强制检查 C为显示过程
+    badblocks -sv /dev/sda5  sv显示检测进度和结果
+
+    磁盘的挂载 
+    mount -o 选项 -t 文件系统   系统可以自己识别文件系统
+    mount 外部设备 目录
+    mount /dev/sda5 /mnt  挂载sda5到mnt下
+    卸载
+    umount 挂载点或者外部设备     就卸载了 
+
+    mount 命令可以查看现在存在的挂载点
+    mount -o remount,-r /mnt  只读形式重新挂载 rw为读写 默认为此形式
+    mount -o remount，noexec /mnt  没有执行权限的挂载  exec为执行
+
+    卸载分区的时候 有时候正在使用分区
+    fuser -mv /mnt 可以查看哪个进程正在使用
+    
+    mount是临时挂载
+    开机自动挂载 vim /etc/fstab  中写入挂载命令
+    最左面设备名 然后是挂载点、文件系统、默认权限、是否做备份0为否  是否使用fsck进行检查 0为检查
+    
+    磁盘参数修改和查看
+    tune2fs -l /dev/sda5 查看信息和修改
+    tune2fs -c 100 /mnt/sda5 修改最大挂载次数 达到最大挂载次数之后会自检
+    e2lavel /dev/sda5 可以查看卷标   后面加卷标可以更改
+
+    挂载镜像iso文件一定要加loop 
+    mount -o loop xx.iso /mnt
+    自动挂载在  /etc/fstab中 挂载点  文件系统类型为iso9660  权限defaults,loop
+    
+    交换分区  硬盘空间模拟内存在linux中也叫虚拟内存
+    cat /proc/swaps 查看交换分区
+    mkswqp /dev/sda6  创建格式化为交换分区 需要用swqpon /dev/sda6激活 关闭为swapoff
+    如果开机就想使用 还是在
+    开机自动运行文件  vim /etc/fstab  中写入 挂载点是swap 文件系统也是swap
+    mount LABLE==yy /mnt  把卷标为yy的分区挂载到mnt下
 
     
+
+    
+    
+
+
 
 
 
