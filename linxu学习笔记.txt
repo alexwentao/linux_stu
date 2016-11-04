@@ -371,8 +371,30 @@ vfs  虚拟文件系统  可以根据软件需要调用相应的文件系统 ext
     开机自动运行文件  vim /etc/fstab  中写入 挂载点是swap 文件系统也是swap
     mount LABLE==yy /mnt  把卷标为yy的分区挂载到mnt下
 
+ 
+文件与文件系统的压缩和打包
+
+    linux系统常见的压缩命令 
+    compress  技术比较陈旧且没有默认安装 
+    compress +文件    -v为显示压缩比例 压缩后源文件消失  uncompress解压
+    compress -c -v services > services.z  -c保存源文件
+
+    gzip,zcat     gzip压缩后可以用zcat来查看压缩文件的内容
+    -d 解压  -c  hosts > hosts.gz    -c为保留源文件
+
+    bzip2，bzcat 同上 压缩后缀为bz2
+
+    zip  hosts.zip hosts   压缩   unzip hosts.zip
     
 
+    tar  打包  此命令自身不带压缩功能 只能打包 
+    tar cvf hosts.tar hosts   f为指明打包好的文件名字 c为创建 v依然为过程
+    归档后源文件默认保留，如果需要删除 则 --remove-files
+    在不解开打包的情况下查看  tar tvf hosts.tar  t列出归档文件   x可以用来解档
+    tar  xvf hosts.tar -C aa/    -C 可以指定解档目录 
+    解档一部分文件 tar xvf xx.tar hosts  只解档hosts文件。其他的不解档
+    tar 可以调用gzip或者bzip2  归档压缩 tar zcvf xx.tar *     z为压缩  tar    解档也加z
+    调用bzip2 加j     -C 可以指定解档目录 后面加文件名可以单独解压
     
     
 
