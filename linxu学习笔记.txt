@@ -395,8 +395,46 @@ vfs  虚拟文件系统  可以根据软件需要调用相应的文件系统 ext
     解档一部分文件 tar xvf xx.tar hosts  只解档hosts文件。其他的不解档
     tar 可以调用gzip或者bzip2  归档压缩 tar zcvf xx.tar *     z为压缩  tar    解档也加z
     调用bzip2 加j     -C 可以指定解档目录 后面加文件名可以单独解压
+
+
+
+第九课（2）
+
+    完整备份工具：dump   -0    （0-9个级别）
+    dump -0   0代表完全备份  每次备份只会从比本次备份级别小的项目开始备份    即如果增量备份就0、1、2、3、  差异备份就0、9、8、7、   可以理解为只和上一个自己小的级别对比 然后进行备份
+
+    增量备份：只备份新增加的数据    0<1 则备份和0级别部分，1<2则备份1和2不同的部分
+    差异备份：备份和完全备份不同的数据   0<9  则备份9和0不同的部分
+    但是8<9  则不和9进行对比备份 而是和0级别的那次备份进行对比备份
+
+    dump -0u -f rhce/1.dump /dev/sda2
+    dump -1u -f rhce/1.dump /dev/sda2
+    dump -2u -f rhce/1.dump /dev/sda2
+    以上命令就可以完成增量备份
+    u表示会把备份时间加入到 /etc/dumpdates这个文件里面
+    restore -t -f 1.dump  t是在不恢复的情况下查看  f为制定文件名
+    restore -r -f /../1.dump  r为恢复所有的文件
+    restore -i -f /../1.dump  i可以恢复  进去后可以？或者help查看  ls可以列出文件  add+文件 可以选择恢复的文件，然后extract   
     
     
+    制作镜像文件：
+    mkisofs -o xx.iso file1 file2 file3 就可以制作成镜像
+    mount -o loop xx.iso /mnt 挂载
+    把光盘中的内容制作成进项  cp /dev/cdrom xx.iso 就可以了
+
+    光盘刻录： cdrecord  自己查帮助
+
+    其他的备份和压缩工具
+    dd  
+    dd if=/dev/zero of=file4 bs=1m count=1 输入dev/zero 每个1m 拿出来一个 组成file4   if就是in file  of就是out file
+    dd if=/dev/sda3 of=test 可以备份数据或者拷贝分区
+
+    cpio可以用来备份数据 但是不知道备份哪些数据  所以需要管道的知识
+    find -name ‘file*’ | cpio -o > xx.cpio
+    o用来打包  i用来解包  u如果解包出来的文件比较新则覆盖
+    如 cpio -iu < xx.cpio 
+
+
 
 
 
