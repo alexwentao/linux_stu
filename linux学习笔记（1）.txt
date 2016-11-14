@@ -1,99 +1,109 @@
-��ʮ�Σ�vim��vi
-    vim +�ļ�  ����ļ���������ļ�������ļ������������ڴ����ȴ����ļ���
-    �������˾���Ĵ�����û�б���ʹ��ڴ���ɾ����
-    �ս����ļ���ʱ������  ����ģʽ��һ��ģʽ�� ��ʱ���ǲ����޸ĵ� 
-    ����޸� ��Ҫ����  ����ģʽ   i I a A o O������  �������� 
-    i �ӵ�ǰ������  I�ӱ��п�ͷ  a ��ǰ������һ���ַ�����  
-    A �ӱ��н���   o�ӱ��е���һ�в���һ���հ��н������ģʽ OΪ��һ�в���
-    ����ģʽ��������ģʽ ��esc
+第十课：vim和vi
+    vim +文件  如果文件存在则打开文件，如果文件不存在则在内存中先创建文件。
+    若保存了就真的创建，没有保存就从内存中删除。
+    刚进入文件的时候是在  命令模式（一般模式） 此时还是不能修改的 
+    如果修改 需要进入  插入模式   i I a A o O都可以  区别如下 
+    i 从当前光标进入  I从本行开头  a 当前光标的下一个字符进入  
+    A 从本行结束   o从本行的下一行产生一个空白行进入插入模式 O为上一行产生
+    插入模式进入命令模式 按esc
 
-    ����ģʽyy���Ƶ�ǰ��  3yy �ӵ�ǰ�п�ʼ��������
-    pճ������ǰ����   u���� ctrl+r ǰ��
-    dd ���У�ɾ������ǰ��  3dd ���У�ɾ������ǰ�� ���ճ�����Ǽ��� ��ճ��ɾ
-    �Ȱ�����Ȼ��shift+g��ת����Ӧ�� ֱ��shift+g��ת�����һ��
-    ����������g ��һ��
-    ��rȻ��Ϳ��԰���Ӧ�ַ����滻������ڵ��ַ� replace
-    x����ɾ��һ���ַ�
+    命令模式yy复制当前行  3yy 从当前行开始复制三行
+    p粘贴到当前行下   u撤销 ctrl+r 前进
+    dd 剪切（删除）当前行  3dd 剪切（删除）当前行 如果粘贴就是剪切 不粘就删
+    先按数字然后按shift+g跳转到对应行 直接shift+g跳转到最后一行
+    连续按两下g 第一行
+    按r然后就可以按相应字符键替换光标所在的字符 replace
+    x可以删除一个字符
 
 
-    ������Ҫ����  ð��ģʽ��β��ģʽ�� ����ģʽ���ܽ���ð��ģʽ
-    ��Ҫ�Ƚ�������ģʽ   ��������ģʽ��  �� ð�Ž������/����
-    ����ð��ģʽ��  ���������� �˳� �滻 ��λ ���Ĳ��� �����ļ����� ����esc��������ģʽ
-    / ����ð��ģʽ��  ���Խ��в��Ҳ���
+    保存需要进入  冒号模式（尾行模式） 插入模式不能进入冒号模式
+    需要先进入命令模式   进入命令模式后  按 冒号进入或者/进入
+    进入冒号模式后  可以做保存 退出 替换 定位 更改参数 更改文件内容 两下esc进入命令模式
+    / 进入冒号模式后  可以进行查找操作
 
-    ð�� �����������
-    set number ����se nu ������ʾ�к� �кŲ�������ļ��� set nonu
-    s/�滻�Ĺؼ���/Ҫ���ɵĹؼ���  ��ʱֻ���滻ѡ���еĵ�һ���ؼ���
-    s/�滻�Ĺؼ���/Ҫ���ɵĹؼ���/g  gΪglobalȫ�ֵ���˼ �滻����ȫ�� 
-    3,13s/�滻�Ĺؼ���/Ҫ���ɵĹؼ���/g   ����ѡ����Χ  .����������ʾ��ǰ��
-    .,$-1s/�滻�Ĺؼ���/Ҫ���ɵĹؼ���/g  $��ʾ���һ�� $-1���������ڶ���
-    %s/�滻�Ĺؼ���/Ҫ���ɵĹؼ���/g  ��ʾȫ��   %s/�滻�Ĺؼ���//g ɾ����
-    10,18/^/#/g ��ͷ��# ע�͵�  10��16s/^#//g ȥ����ͷ��#
-    �л����ڼ���ֱ�Ӽ�����
-
-    /����  ð��ģʽ�������� ������more lss manpage
-    ֱ������ؼ��ֿ��Ը�����ѯ Сдn��һ�� ��дN��һ��
+    冒号 进入操作如下
+    set number 或者se nu 可以显示行号 行号不会存在文件中 set nonu
+    s/替换的关键字/要换成的关键字  此时只会替换选中行的第一个关键字
+    s/替换的关键字/要换成的关键字/g  g为global全局的意思 替换本行全部 
+    3,13s/替换的关键字/要换成的关键字/g   可以选定范围  .可以用来表示当前行
+    .,$-1s/替换的关键字/要换成的关键字/g  $表示最后一行 $-1代表倒数第二行
+    %s/替换的关键字/要换成的关键字/g  表示全文   %s/替换的关键字//g 删除掉
+    10,18/^/#/g 开头加# 注释掉  10,16s/^#//g 去掉开头的#
     
 
-    vim��ѡ��
-    ���ӿ� ctrl+v    ����������Ӧ�ļ���ctrl+vȻ�󰴼�ͷ����ѡ���� 
-    ��y���� Ȼ��������λ��pճ�� 
-
-    vim����ͬʱ�򿪶���ļ�  vim �ļ�1 �ļ�2
-    ��鿴�ڶ����ļ��� ����ð��ģʽ ʹ��next����n�ͽ���ڶ����ļ� N������һ��   ��������first��last  ���ڶ���ļ�֮�临��ճ��
-    ���һ���ļ��ܳ� ��ô�����÷���  ð��ģʽ  sp�Ϳ��Է���
-    ctrl+w Ȼ�����¼�ͷ�����л�  ����k�� j�� ���߰�סctrl����w�ͻ��л�
-
-    vim��������
-    vim .vimrc������  ����Ĭ�ϴ��кžͿ������ļ���ֱ������set nu
-
-    ϵͳ���� 
-    vim /etc/sysconfig/i18n �ļ���
+    /进入  冒号模式操作如下 类似于more lss manpage
+    直接输入关键字可以高亮查询 小写n下一个 大写N上一个
     
-    linux��windows�ļ���ת��ʽ�ᶪʧ
-    ʹ��nuix2dos -n �ļ� �ļ���2 -nΪnew���ļ�  -k���ı��ļ����޸�ʱ��
-    ����dos2unix  windows�ļ�ת��linux�ļ���ʽ  2Ϊto����˼
+
+    vim块选择
+    可视块 ctrl+v    光标调整到相应文件按ctrl+v然后按箭头调整选中区 
+    按y复制 然后调整光标位置p粘贴 
+
+    vim可以同时打开多个文件  vim 文件1 文件2
+    想查看第二个文件则 进入冒号模式 使用next或者n就进入第二个文件 N就是上一个   还可以用first和last  可在多个文件之间复制粘贴
+    如果一个文件很长 那么可以用分屏  冒号模式  sp就可以分屏
+    ctrl+w 然后按上下箭头可以切换  或者k上 j下 或者按住ctrl连按w就会切换
+
+    vim环境设置
+    vim .vimrc中设置  比如默认带行号就可以在文件中直接设置set nu
+
+    系统编码 
+    vim /etc/sysconfig/i18n 文件中
+    
+    linux和windows文件互转格式会丢失
+    使用nuix2dos -n 文件 文件名2 -n为new新文件  -k不改变文件的修改时间
+    或者dos2unix  windows文件转到linux文件格式  2为to的意思
 
 
-ʮһ�£�
+十一章：
     
     bash
-    shell��ʵ����һ�����������������Ǻͻ���֮���ָ��ͽ��
-    ��shell�ǿ������ġ���ʹ�õ��ն�������shell��һ������ ���ն˵�ʱ�����ӵ�shell  ϵͳ��Ӧ�Ĵ���һ��shell����
+    shell其实就是一个翻译器，翻译我们和机器之间的指令和结果
+    而shell是看不见的。所使用的终端是连接shell的一个工具 打开终端的时候链接到shell  系统对应的创建一个shell进程
 
-    ��ǰϵͳ֧�ֵ�shell    ��/etc/shells����Բ鿴  Ĭ��ʹ�õ���bash
-    ��Щ��������which is ��which�Ҳ����� ����cd  ����shell���õ�����
-    type cd �Ϳ��Կ���������� typeҲ��shell��Ƕ������
+    当前系统支持的shell    在/etc/shells里可以查看  默认使用的是bash
+    有些命令是用which is 和which找不到的 比如cd  就是shell内置的命令
+    type cd 就可以看命令的类型 type也是shell内嵌的命令
 
-    ��linux�п�����һ�������������� �����÷ֺţ�����
-    ���������ʱ�� \���Ի�������
+    在linux中可以在一行中输入多个命令 可以用分号；隔开
+    输入命令的时候 \可以换行输入
 
-    ����
-    ~���Դ�����ǰ�û��ļ�Ŀ¼ ��һ������
-    �趨���ر���  ������=ֵ  ��������������ĸ�����»������  ���������ֿ�ͷ  
-    =���߲����пո�  ���ֵ���л��пո�  �����˫��������ʶ  echo $�������������
-    unset ������  �Ϳ���ע������  �����ı��ر���  ֻ��Ӱ�쵱ǰ��shell ����Ӱ����shell����   echo $$ ���Կ���ǰshell��id  �ٴν���bash ��������shell ��id�ͱ���  exit�����˳���shell
+    变量
+    ~可以代表当前用户的家目录 是一个变量
+    设定本地变量  变量名=值  变量名可以由字母数字下划线组成  不能用数字开头  
+    =两边不能有空格  如果值当中还有空格  最好用双引号来标识  echo $变量名可以输出
+    unset 变量名  就可以注销变量  这种文本地变量  只能影响当前的shell 不能影响子shell进程   echo $$ 可以看当前shell的id  再次进入bash 进入了子shell 其id就变了  exit可以退出子shell
 
-    ��������
-    export yy=10 ֱ�Ӷ��廷������   ����Ѿ�����һ�����ر���xx  ecport��Ӣ����˼�����
-    export xx����ʹ���ɻ�������  ����������Ӱ�쵽���е���shell
+    环境变量
+    export yy=10 直接定义环境变量   如果已经存在一个本地变量xx  ecport（英文意思输出）
+    export xx可以使其变成环境变量  环境变量会影响到所有的子shell
 
-    �鿴���еı��� set  ����ʾ���еı���  env������ʾ�������� 
-    export����export -pҲ������ʾ���л������� 
+    查看所有的变量 set  会显示所有的变量  env可以显示环境变量 
+    export或者export -p也可以显示所有环境变量 
 
-    declare -x zz=10 ���Զ��廷������ declare +x�Ϳ��Ա�ɱ��ر��� declare��Ӣ����˼ ������������
+    declare -x zz=10 可以定义环境变量 declare +x就可以变成本地变量 declare（英文意思 声明。宣布）
     
     
-    λ�ò��� 
-    shell���Ի�ȡ����ı��� ������������ $1Ϊ��һ������ $2Ϊ�ڶ��� �Դ�����
-    ע�⣺����������ʮһ������echo ${10}  ���дecho $12 ������$1��ֵ��2ƴ��
-    $0��ʾ�ļ�������    $#��ʾ�����ĸ��� $*���Ա�ʾ���в���
-    ���ӣ�
+    位置参数 
+    shell可以获取传入的变量 用来输入或操作 $1为第一个变量 $2为第二个 以此类推
+    注意：如果想输出第十一个变量echo ${10}  如果写echo $12 则会输出$1的值和2拼接
+    $0表示文件的名字    $#表示参数的个数 $*可以表示所有参数
+    例子：
     set 1 2 3 4 5 6     
-    echo $0  ���bash
-    echo $#  ���6
-    echo $*  ���1 2 3 4 5 6 
+    echo $0  输出bash
+    echo $#  输出6
+    echo $*  输出1 2 3 4 5 6 
 
-    ϵͳ����Щ��������
-    41.34
+    系统有哪些环境变量
+    $PATH   $HOME   $USER   $HISTORYFILESIZE输入历史数目
+
+    $PS1 表示输入提示符  u为user h为短主机名 没有域名的主机名 
+    相当于hostname -s   w为工作目录   可以自己进行更改
+
+    $PS2 代表输入时 \   换行输入时的提示符
+
+    locale -a 可查看系统支持编码   当前编码  echo $LANG
+
+    变量键盘读取、数组与声明 
+    
 
